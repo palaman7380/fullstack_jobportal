@@ -26,8 +26,11 @@ SECRET_KEY = "django-insecure-r^p@fmvw!a-@*t^w6e4zpcwwx6t&h_6a5ftt)kdd99*3l$g@3f
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ["fullstack-jobpotal-kuqo.onrender.com",
+                 "localhost","127.0.0.1",]
+CSRF_TRUSTED_ORIGINS= [
+    "https://fullstack-jobpotal-kuqo.onrender.com",
+    }
 AUTH_USER_MODEL = "accounts.CustomUser"
 
 
