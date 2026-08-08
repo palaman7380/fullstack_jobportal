@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Sign Up - JobPortal{% endblock %}
+{% block content %}
+<div class="auth-wrapper">
+    <div class="auth-card">
+        <h1>Create your account</h1>
+        <p class="auth-subtitle">Join JobPortal to post or apply for jobs</p>
+
+        {% if form.errors %}
+            <div class="alert alert-error">
+                Please fix the errors below and try again.
+            </div>
+        {% endif %}
+
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary" style="width:100%;">Sign Up</button>
+        </form>
+
+        <p style="text-align:center; margin-top:1.2rem; font-size:0.9rem;">
+            Already have an account?
+            <a href="{% url 'login' %}">Login</a>
+        </p>
+    </div>
+</div>
+{% endblock %}

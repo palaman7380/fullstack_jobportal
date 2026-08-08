@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Job Applications - JobPortal{% endblock %}
+{% block content %}
+<div class="page-header">
+    <h1>Applications Received</h1>
+</div>
+
+{% if object_list %}
+    {% for application in object_list %}
+        <div class="card job-card">
+            <h2>{{ application.applicant.username }}</h2>
+            <div class="job-meta">
+                <span>✉️ {{ application.applicant.email }}</span>
+                <span>🗓️ Applied on {{ application.date_applied|date:"M d, Y" }}</span>
+            </div>
+        </div>
+    {% endfor %}
+{% else %}
+    <div class="card empty-state">
+        <p>No applications have been received yet.</p>
+    </div>
+{% endif %}
+{% endblock %}

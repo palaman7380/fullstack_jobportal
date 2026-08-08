@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Browse Jobs - JobPortal{% endblock %}
+{% block content %}
+<div class="page-header">
+    <h1>Available Jobs</h1>
+    {% if user.is_authenticated %}
+        <a class="btn btn-primary" href="{% url 'job_create' %}">+ Post a New Job</a>
+    {% endif %}
+</div>
+
+{% if all_jobs %}
+    {% for job in all_jobs %}
+        <div class="card job-card">
+            <h2><a href="{% url 'job_detail' job.pk %}">{{ job.title }}</a></h2>
+            <div class="job-meta">
+                <span>🏢 {{ job.company_name }}</span>
+                <span>📍 {{ job.location }}</span>
+                <span>💰 {{ job.salary }}</span>
+                <span>🗓️ {{ job.date_posted|date:"M d, Y" }}</span>
+            </div>
+            <a class="btn btn-outline btn-sm" href="{% url 'job_detail' job.pk %}">View Details</a>
+        </div>
+    {% endfor %}
+{% else %}
+    <div class="card empty-state">
+        <p>No jobs are available right now.</p>
+        {% if user.is_authenticated %}
+            <a class="btn btn-primary" href="{% url 'job_create' %}">Post the first job</a>
+        {% endif %}
+    </div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}My Applications - JobPortal{% endblock %}
+{% block content %}
+<div class="page-header">
+    <h1>My Job Applications</h1>
+</div>
+
+{% if object_list %}
+    {% for application in object_list %}
+        <div class="card job-card">
+            <h2>{{ application.job.title }}</h2>
+            <div class="job-meta">
+                <span>🏢 {{ application.job.company_name }}</span>
+                <span>🗓️ Applied on {{ application.date_applied|date:"M d, Y" }}</span>
+            </div>
+            <a class="btn btn-outline btn-sm" href="{% url 'job_detail' application.job.pk %}">View Job</a>
+        </div>
+    {% endfor %}
+{% else %}
+    <div class="card empty-state">
+        <p>You have not applied for any jobs yet.</p>
+        <a class="btn btn-primary" href="{% url 'job_list' %}">Browse Jobs</a>
+    </div>
+{% endif %}
+{% endblock %}

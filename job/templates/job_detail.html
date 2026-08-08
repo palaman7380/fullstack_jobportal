@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}{{ job_details.title }} - JobPortal{% endblock %}
+{% block content %}
+<p><a href="{% url 'job_list' %}">&larr; Back to Jobs</a></p>
+
+<div class="card">
+    <div class="page-header">
+        <h1>{{ job_details.title }}</h1>
+        <span class="tag">{{ job_details.location }}</span>
+    </div>
+
+    <div class="job-meta" style="margin-bottom:1rem;">
+        <span>🏢 {{ job_details.company_name }}</span>
+        <span>💰 {{ job_details.salary }}</span>
+        <span>🗓️ Posted {{ job_details.date_posted|date:"M d, Y" }}</span>
+        <span>👤 {{ job_details.posted_by }}</span>
+    </div>
+
+    <hr class="divider">
+
+    <h2>Job Description</h2>
+    <p>{{ job_details.description|linebreaks }}</p>
+
+    <hr class="divider">
+
+    <div class="actions-inline">
+        {% if user.is_authenticated %}
+            {% if has_applied %}
+                <span class="alert alert-success" style="margin:0;">You have already applied for this job.</span>
+            {% else %}
+                <a class="btn btn-primary" href="{% url 'apply_job' job_details.pk %}">Apply for this Job</a>
+            {% endif %}
+
+            {% if user == job_details.posted_by %}
+                <a class="btn btn-outline" href="{% url 'job_update' job_details.pk %}">Edit Job</a>
+                <a class="btn btn-danger" href="{% url 'job_delete' job_details.pk %}">Delete Job</a>
+                <a class="btn btn-outline" href="{% url 'job_applications' job_details.pk %}">View Applications</a>
+            {% endif %}
+        {% else %}
+            <span>Please <a href="{% url 'login' %}">login</a> to apply.</span>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

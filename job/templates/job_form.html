@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Post a Job - JobPortal{% endblock %}
+{% block content %}
+<div class="page-header">
+    <h1>Post a New Job</h1>
+</div>
+
+<div class="card form-card">
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Post Job</button>
+            <a class="btn btn-outline" href="{% url 'job_list' %}">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

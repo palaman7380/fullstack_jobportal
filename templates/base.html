@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}JobPortal{% endblock %}</title>
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-dark: #4338ca;
+            --bg: #f5f6fb;
+            --card: #ffffff;
+            --text: #1f2333;
+            --muted: #6b7280;
+            --border: #e5e7eb;
+            --danger: #dc2626;
+            --danger-dark: #b91c1c;
+            --success-bg: #ecfdf5;
+            --success-text: #047857;
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+        a { color: var(--primary); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+
+        /* ---------- Navbar ---------- */
+        .navbar {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            padding: 0.9rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .navbar .brand {
+            color: #fff;
+            font-size: 1.3rem;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+        }
+        .navbar .brand:hover { text-decoration: none; opacity: 0.9; }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 1.1rem;
+            flex-wrap: wrap;
+        }
+        .nav-links a {
+            color: rgba(255,255,255,0.9);
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+        .nav-links a:hover { color: #fff; text-decoration: none; }
+        .nav-links .nav-user {
+            color: #fff;
+            font-weight: 600;
+            padding-left: 0.6rem;
+            border-left: 1px solid rgba(255,255,255,0.35);
+        }
+        .nav-links .btn-logout {
+            background: rgba(255,255,255,0.15);
+            padding: 0.4rem 0.9rem;
+            border-radius: 6px;
+            color: #fff;
+            font-weight: 600;
+        }
+        .nav-links .btn-logout:hover { background: rgba(255,255,255,0.28); text-decoration: none; }
+        .nav-links .btn-signup {
+            background: #fff;
+            color: var(--primary-dark);
+            padding: 0.4rem 0.9rem;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+        .nav-links .btn-signup:hover { text-decoration: none; opacity: 0.9; }
+
+        /* ---------- Layout ---------- */
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem 3rem;
+        }
+        .page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .page-header h1 { margin: 0; font-size: 1.7rem; }
+
+        /* ---------- Buttons ---------- */
+        .btn {
+            display: inline-block;
+            padding: 0.55rem 1.1rem;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.92rem;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .btn:hover { text-decoration: none; }
+        .btn-primary { background: var(--primary); color: #fff; }
+        .btn-primary:hover { background: var(--primary-dark); }
+        .btn-outline { background: #fff; color: var(--primary); border: 1px solid var(--primary); }
+        .btn-outline:hover { background: #eef0ff; }
+        .btn-danger { background: var(--danger); color: #fff; }
+        .btn-danger:hover { background: var(--danger-dark); }
+        .btn-sm { padding: 0.35rem 0.75rem; font-size: 0.85rem; }
+
+        /* ---------- Cards ---------- */
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1.4rem 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+        }
+        .job-card h2 { margin: 0 0 0.4rem; font-size: 1.2rem; }
+        .job-card h2 a { color: var(--text); }
+        .job-card h2 a:hover { color: var(--primary); }
+        .job-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.9rem;
+            color: var(--muted);
+            font-size: 0.88rem;
+            margin: 0.4rem 0 0.7rem;
+        }
+        .job-meta span { display: flex; align-items: center; gap: 0.3rem; }
+        .tag {
+            display: inline-block;
+            background: #eef0ff;
+            color: var(--primary-dark);
+            font-size: 0.78rem;
+            font-weight: 600;
+            padding: 0.15rem 0.6rem;
+            border-radius: 20px;
+        }
+        .empty-state {
+            text-align: center;
+            color: var(--muted);
+            padding: 3rem 1rem;
+        }
+
+        /* ---------- Forms ---------- */
+        .auth-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: calc(100vh - 68px);
+            padding: 2rem 1rem;
+        }
+        .auth-card {
+            background: var(--card);
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+            padding: 2.2rem 2.2rem 1.8rem;
+            width: 100%;
+            max-width: 400px;
+        }
+        .auth-card h1 {
+            margin: 0 0 0.3rem;
+            font-size: 1.5rem;
+            text-align: center;
+        }
+        .auth-subtitle {
+            text-align: center;
+            color: var(--muted);
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+        form p { margin: 0 0 1rem; }
+        form label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.88rem;
+            margin-bottom: 0.3rem;
+            color: var(--text);
+        }
+        form input, form textarea, form select {
+            width: 100%;
+            padding: 0.6rem 0.7rem;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 0.95rem;
+            background: #fff;
+            color: var(--text);
+        }
+        form input:focus, form textarea:focus, form select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79,70,229,0.12);
+        }
+        form textarea { min-height: 120px; resize: vertical; }
+        .helptext { font-size: 0.78rem; color: var(--muted); }
+        .errorlist {
+            list-style: none;
+            margin: 0.2rem 0 0;
+            padding: 0;
+            color: var(--danger);
+            font-size: 0.82rem;
+        }
+        .alert {
+            padding: 0.75rem 1rem;
+            border-radius: 6px;
+            font-size: 0.88rem;
+            margin-bottom: 1.2rem;
+        }
+        .alert-error { background: #fef2f2; color: var(--danger-dark); border: 1px solid #fecaca; }
+        .alert-success { background: var(--success-bg); color: var(--success-text); border: 1px solid #a7f3d0; }
+        .form-card { max-width: 560px; }
+        .form-actions {
+            display: flex;
+            gap: 0.7rem;
+            align-items: center;
+            margin-top: 0.5rem;
+        }
+        .detail-row { margin: 0.35rem 0; color: var(--text); }
+        .detail-row strong { color: var(--muted); font-weight: 600; }
+        .divider { border: none; border-top: 1px solid var(--border); margin: 1.1rem 0; }
+        .actions-inline { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-top: 0.8rem; }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a class="brand" href="{% url 'job_list' %}">JobPortal</a>
+        <div class="nav-links">
+            <a href="{% url 'job_list' %}">Browse Jobs</a>
+            {% if user.is_authenticated %}
+                <a href="{% url 'job_create' %}">Post a Job</a>
+                <a href="{% url 'my_jobs' %}">My Jobs</a>
+                <a href="{% url 'my_applications' %}">My Applications</a>
+                <span class="nav-user">{{ user.username }}</span>
+                <form method="post" action="{% url 'logout' %}" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn-logout">Logout</button>
+                </form>
+            {% else %}
+                <a href="{% url 'login' %}">Login</a>
+                <a class="btn-signup" href="{% url 'signup' %}">Sign Up</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>

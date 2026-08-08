@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}My Jobs - JobPortal{% endblock %}
+{% block content %}
+<div class="page-header">
+    <h1>My Posted Jobs</h1>
+    <a class="btn btn-primary" href="{% url 'job_create' %}">+ Post a New Job</a>
+</div>
+
+{% if object_list %}
+    {% for job in object_list %}
+        <div class="card job-card">
+            <h2><a href="{% url 'job_detail' job.pk %}">{{ job.title }}</a></h2>
+            <div class="job-meta">
+                <span>🏢 {{ job.company_name }}</span>
+                <span>📍 {{ job.location }}</span>
+                <span>💰 {{ job.salary }}</span>
+            </div>
+            <div class="actions-inline">
+                <a class="btn btn-outline btn-sm" href="{% url 'job_detail' job.pk %}">View</a>
+                <a class="btn btn-outline btn-sm" href="{% url 'job_update' job.pk %}">Edit</a>
+                <a class="btn btn-outline btn-sm" href="{% url 'job_applications' job.pk %}">Applications</a>
+                <a class="btn btn-danger btn-sm" href="{% url 'job_delete' job.pk %}">Delete</a>
+            </div>
+        </div>
+    {% endfor %}
+{% else %}
+    <div class="card empty-state">
+        <p>You have not posted any jobs yet.</p>
+        <a class="btn btn-primary" href="{% url 'job_create' %}">Post your first job</a>
+    </div>
+{% endif %}
+{% endblock %}
