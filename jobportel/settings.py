@@ -30,7 +30,7 @@ ALLOWED_HOSTS = ["fullstack-jobpotal-kuqo.onrender.com",
                  "localhost","127.0.0.1",]
 CSRF_TRUSTED_ORIGINS= [
     "https://fullstack-jobpotal-kuqo.onrender.com",
-    }
+]
 AUTH_USER_MODEL = "accounts.CustomUser"
 
 
